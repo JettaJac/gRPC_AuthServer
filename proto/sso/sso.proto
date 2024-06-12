@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 package auth;
+
 option go_package = "mir.sso.v1;ssov1";
 
 service Auth {
