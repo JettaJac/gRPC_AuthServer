@@ -6,9 +6,14 @@ package main
 // go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
 import (
+	"app/internal/config"
 	"fmt"
 )
 
 func main() {
 	fmt.Println("Start app")
+	cfg := config.MustLoad()
+	fmt.Println(cfg)
 }
+
+func setupLogger(env string)
