@@ -6,10 +6,14 @@ package main
 // go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
 import (
-	"app/internal/config"
 	"fmt"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
+
+	"sso/internal/app"
+	"sso/internal/config"
 )
 
 const (
@@ -23,6 +27,16 @@ func main() {
 	cfg := config.MustLoad()
 	log := setupLogger(cfg.Env)
 	log.Info("starting application", slog.String("env", cfg.Env))
+	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
+	go application.GRPCSrv.MustRun()
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
+	sign := <-stop
+	log.Info("stopping signal", slog.String("signal", sign.String()))
+	application.GRPCSrv.Stop()
+	log.Info("application stopped")
+
 }
 
 func setupLogger(env string) *slog.Logger {
