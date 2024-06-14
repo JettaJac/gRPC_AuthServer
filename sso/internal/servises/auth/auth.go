@@ -71,7 +71,7 @@ func (a *Auth) Login(
 	ctx context.Context,
 	email,
 	password string,
-	appID int,
+	appID int64,
 ) (string, error) {
 	const op = "auth.Login"
 
