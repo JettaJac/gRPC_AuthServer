@@ -5,7 +5,7 @@ import (
 	"time"
 
 	grpcapp "sso/internal/app/grpc"
-	_ "sso/internal/service/auth"
+	"sso/internal/services/auth"
 	"sso/internal/storage/sqlite"
 )
 

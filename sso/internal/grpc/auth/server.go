@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 	"errors"
-	"sso/internal/servises/auth"
+	"sso/internal/services/auth"
 	"sso/internal/storage"
 
 	ssov1 "github.com/jettajac/wb_L0/tree/main/protos/gen/go/sso"
@@ -13,7 +13,7 @@ import (
 )
 
 type Auth interface {
-	Login(ctx context.Context, email string, password string, appID int) (tiken string, err error)
+	Login(ctx context.Context, email string, password string, appID int64) (tiken string, err error)
 	RegisterNewUser(ctx context.Context, email string, password string) (userID int64, err error)
 	IsAdmin(ctx context.Context, userID int64) (bool, error)
 }
@@ -40,7 +40,7 @@ func (s *serverAPI) Login(
 		return nil, err
 	}
 
-	token, err := s.auth.Login(ctx, req.GetEmail(), req.GetPassword(), int(req.GetAppId()))
+	token, err := s.auth.Login(ctx, req.GetEmail(), req.GetPassword(), int64(req.GetAppId()))
 	if err != nil {
 		if errors.Is(err, auth.ErrInvalidCredentials) {
 			return nil, status.Error(codes.InvalidArgument, "invalid Argument")
