@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"sso/internal/services/auth"
-	"sso/internal/storage"
 
 	ssov1 "github.com/jettajac/wb_L0/tree/main/protos/gen/go/sso"
 	"google.golang.org/grpc"
