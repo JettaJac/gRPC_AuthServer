@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"errors"
+	"fmt"
 	"sso/internal/services/auth"
 
 	ssov1 "github.com/jettajac/wb_L0/tree/main/protos/gen/go/sso"
@@ -46,6 +47,8 @@ func (s *serverAPI) Login(
 		}
 		return nil, status.Error(codes.Internal, "internal error")
 	}
+
+	fmt.Println("Токин в сервер", token) // !!!  временно
 
 	return &ssov1.LoginResponse{Token: token}, nil
 }

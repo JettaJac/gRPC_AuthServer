@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Env         string        `yaml:"env" env-default:"local"`
 	StoragePath string        `yaml:"storage_path" env-requered:"true"`
+	DatabaseURL string        `yaml:"databaseURL" env:"DATABASE_HOST" env-default:"localhost" env-required:"true"`
 	TokenTTL    time.Duration `yaml:"token_ttl" env-default:"true"`
 	GRPC        GRPCConfig    `yaml:"grpc"`
 }

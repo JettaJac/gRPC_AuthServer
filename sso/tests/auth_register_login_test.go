@@ -50,6 +50,7 @@ func TestRegisterLogin_Login_HappyPath(t *testing.T) {
 	tokenParser, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
 		return []byte(appSecret), nil
 	})
+
 	require.NoError(t, err)
 
 	claims, ok := tokenParser.Claims.(jwt.MapClaims)
@@ -57,7 +58,7 @@ func TestRegisterLogin_Login_HappyPath(t *testing.T) {
 
 	assert.Equal(t, respReg.GetUserId(), int64(claims["uid"].(float64)))
 	assert.Equal(t, email, claims["email"].(string))
-	assert.Equal(t, appID, claims["appid"].(float64))
+	assert.Equal(t, appID, int(claims["app_id"].(float64)))
 	const deltaSecond = 1
 
 	assert.InDelta(t, loginTime.Add(st.Cfg.TokenTTL).Unix(), claims["exp"].(float64), deltaSecond)

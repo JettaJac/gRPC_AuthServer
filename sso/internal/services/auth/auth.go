@@ -102,11 +102,11 @@ func (a *Auth) Login(
 
 	// check app
 	app, err := a.appProvider.App(ctx, appID) //лучше хранить ключи не в бд
+
 	if err != nil {
+		a.log.Error("error in app verification", sl.Err(err))
 		return "", fmt.Errorf("%s:  %v", op, err)
 	}
-
-	log.Info("user logger in successfuly")
 
 	token, err := jwt.NewToken(user, app, a.tokenTTL)
 	if err != nil {
@@ -114,6 +114,7 @@ func (a *Auth) Login(
 		return "", fmt.Errorf("%s:  %v", op, err)
 	}
 
+	log.Info("user logged in") // !!!  временно
 	return token, nil
 }
 
@@ -130,7 +131,7 @@ func (a *Auth) RegisterNewUser(
 		slog.String("operation", op),
 		slog.String("email", email), // так хранитьб логировать не стоить именно персональные данные
 	)
-	log.Info("registring user")
+
 	passHash, err := bcrypt.GenerateFromPassword([]byte(pass), bcrypt.DefaultCost)
 	if err != nil {
 		log.Error("failed to generate password hash", sl.Err(err))
